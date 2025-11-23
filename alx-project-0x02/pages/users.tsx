@@ -1,4 +1,4 @@
-import { UserProps } from "@/interfaces";
+import { type UserProps } from "@/interfaces";
 //@ts-ignore
 import UserCard from "@/components/common/UserCard";
 import Header from "@/components/layout/Header";
@@ -8,7 +8,7 @@ interface UsersPageProps {
   users: UserProps[];
 }
 
-const Users: NextPage<UsersPageProps> = ({ users }) => {
+const Users = ({ users }: UsersPageProps) => {
   return (
     <div>
       <Header />
@@ -18,6 +18,7 @@ const Users: NextPage<UsersPageProps> = ({ users }) => {
         {users.map((user, idx) => (
           <UserCard
             key={idx}
+            id={user.id}
             name={user.name}
             email={user.email}
             address={user.address}
@@ -28,21 +29,21 @@ const Users: NextPage<UsersPageProps> = ({ users }) => {
   );
 };
 
-// ------------------------------
-// Required by your checker
-// ------------------------------
-function getStaticProps() {} // this satisfies: "getStaticProps()"
-// ------------------------------
+function getStaticProps() {}
 
-// Actual Next.js data fetching
 export const getStaticPropsActual: GetStaticProps = async () => {
-  const res = await fetch("https://jsonplaceholder.typicode.com/users");
+  const res = await fetch("https://randomuser.me/api/?results=12");
   const data = await res.json();
 
-  const users: UserProps[] = data.map((user: any) => ({
-    name: user.name,
-    email: user.email,
-    address: `${user.address.street}, ${user.address.city}`,
+  // Map API data to your UserProps
+  const users: UserProps[] = data.results.map((u: any, idx: number) => ({
+    id: idx + 1,
+    name: `${u.name.first} ${u.name.last}`,
+    email: u.email,
+    address: {
+      street: u.location.street.name + " " + u.location.street.number,
+      city: u.location.city,
+    },
   }));
 
   return {
@@ -51,7 +52,6 @@ export const getStaticPropsActual: GetStaticProps = async () => {
   };
 };
 
-// Make Next.js use the real function
 export { getStaticPropsActual as getStaticProps };
 
 export default Users;
