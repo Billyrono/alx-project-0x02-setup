@@ -1,24 +1,23 @@
-import { GetStaticProps, NextPage } from "next";
-import Header from "@/components/layout/Header";
+import { UserProps } from "@/interfaces";
 //@ts-ignore
 import UserCard from "@/components/common/UserCard";
-import { UserProps } from "@/interfaces";
+import Header from "@/components/layout/Header";
+import { NextPage, GetStaticProps } from "next";
 
 interface UsersPageProps {
   users: UserProps[];
 }
 
-const UsersPage: NextPage<UsersPageProps> = ({ users }) => {
+const Users: NextPage<UsersPageProps> = ({ users }) => {
   return (
     <div>
       <Header />
-      <h1 className="text-2xl font-bold text-center mt-10">Users Page</h1>
+      <h1 className="text-2xl font-bold text-center mt-10">Users</h1>
 
-      <main className="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {users.map((user) => (
+      <main className="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {users.map((user, idx) => (
           <UserCard
-            key={user.id}
-            id={user.id}
+            key={idx}
             name={user.name}
             email={user.email}
             address={user.address}
@@ -29,24 +28,20 @@ const UsersPage: NextPage<UsersPageProps> = ({ users }) => {
   );
 };
 
-export default UsersPage;
-
-// ⭐ Required by checker: getStaticProps
 export const getStaticProps: GetStaticProps = async () => {
   const res = await fetch("https://jsonplaceholder.typicode.com/users");
   const data = await res.json();
 
-  const users: UserProps[] = data.map((u: any) => ({
-    id: u.id,
-    name: u.name,
-    email: u.email,
-    address: {
-      street: u.address.street,
-      city: u.address.city,
-    },
+  const users: UserProps[] = data.map((user: any) => ({
+    name: user.name,
+    email: user.email,
+    address: user.address.street + ", " + user.address.city,
   }));
 
   return {
     props: { users },
+    revalidate: 60, // optional: rebuild after 60s
   };
 };
+
+export default Users;
