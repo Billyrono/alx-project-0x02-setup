@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { PostModalProps } from "@/interfaces";
+import { type PostModalProps } from "@/interfaces";
 
 const PostModal = ({ onAddPost }: PostModalProps) => {
   const [isOpen, setIsOpen] = useState(false);

@@ -1,9 +1,9 @@
-import { ButtonProps } from "@/interfaces";
+import { type ButtonProps } from "@/interfaces";
 
 const Button = ({ children, onClick, shape, size }: ButtonProps) => {
   const sizeClasses = {
-    small: "px-3 py-1 text-sm",
-    medium: "px-4 py-2 text-base",
+    small: "px-2 py-1 text-sm",
+    medium: "px-4 py-2 text-md",
     large: "px-6 py-3 text-lg",
   };
 
