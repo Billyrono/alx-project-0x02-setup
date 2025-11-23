@@ -11,6 +11,9 @@ const Header: React.FC = () => {
       <Link href="/about" className="mr-4 hover:underline">
         About
       </Link>
+      <Link href="/posts" className="hover:underline">
+        Posts{" "}
+      </Link>
     </header>
   );
 };
