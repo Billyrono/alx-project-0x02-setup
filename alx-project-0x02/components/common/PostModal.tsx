@@ -1,11 +1,7 @@
 import React, { useState } from "react";
-import { CardProps } from "@/interfaces";
+import { PostModalProps } from "@/interfaces";
 
-interface PostModalProps {
-  onAddPost: (post: CardProps) => void; // callback to parent
-}
-
-const PostModal: React.FC<PostModalProps> = ({ onAddPost }) => {
+const PostModal = ({ onAddPost }: PostModalProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
